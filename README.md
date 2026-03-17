@@ -81,7 +81,7 @@ npm run deploy
 
 After deploying, the app is live at:
 ```
-https://<your-github-username>.github.io/conflict-gas-tracker/
+https://matthewjgarcia.github.io/conflict-gas-tracker/
 ```
 
 > **Note:** `vite.config.js` has `base: '/conflict-gas-tracker/'` — this must match your GitHub repo name exactly.

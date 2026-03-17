@@ -1,5 +1,6 @@
-// Static fallback prices — estimated as of March 2026
-// Reflects ~$0.71 national avg increase since Jan 2025 (pre-conflict baseline)
+// Static fallback prices — estimated as of mid-March 2026
+// Reflects ~$1.16 national avg increase since Jan 2025 (pre-conflict baseline)
+// Updated after Feb 28 war outbreak, Hormuz closure, and Kharg Island strikes
 
 export const STATE_NAMES = {
   AL: 'Alabama',      AK: 'Alaska',         AZ: 'Arizona',      AR: 'Arkansas',
@@ -17,23 +18,24 @@ export const STATE_NAMES = {
   WV: 'West Virginia',WI: 'Wisconsin',      WY: 'Wyoming',
 }
 
-// Current regular gas prices by state ($/gal), estimated March 2026
+// Current regular gas prices by state ($/gal), estimated Mar 16, 2026
+// War-driven surge: +$0.45 avg vs pre-war levels; CA crossed $5.30, HI above $5.60
 const regularPrices = {
-  AL: 3.74, AK: 4.78, AZ: 3.91, AR: 3.67, CA: 4.85,
-  CO: 3.89, CT: 3.98, DE: 3.84, DC: 4.02, FL: 3.82,
-  GA: 3.79, HI: 5.22, ID: 3.82, IL: 3.98, IN: 3.71,
-  IA: 3.68, KS: 3.63, KY: 3.69, LA: 3.72, ME: 3.92,
-  MD: 3.89, MA: 3.94, MI: 3.89, MN: 3.77, MS: 3.71,
-  MO: 3.65, MT: 3.95, NE: 3.65, NV: 4.12, NH: 3.87,
-  NJ: 3.92, NM: 3.69, NY: 4.18, NC: 3.78, ND: 3.72,
-  OH: 3.76, OK: 3.63, OR: 4.35, PA: 3.87, RI: 3.91,
-  SC: 3.77, SD: 3.69, TN: 3.72, TX: 3.64, UT: 3.74,
-  VT: 3.89, VA: 3.84, WA: 4.52, WV: 3.76, WI: 3.82,
-  WY: 3.78,
+  AL: 4.19, AK: 5.23, AZ: 4.36, AR: 4.12, CA: 5.31,
+  CO: 4.34, CT: 4.43, DE: 4.29, DC: 4.47, FL: 4.27,
+  GA: 4.24, HI: 5.68, ID: 4.27, IL: 4.43, IN: 4.16,
+  IA: 4.13, KS: 4.08, KY: 4.14, LA: 4.17, ME: 4.37,
+  MD: 4.34, MA: 4.39, MI: 4.34, MN: 4.22, MS: 4.16,
+  MO: 4.10, MT: 4.40, NE: 4.10, NV: 4.57, NH: 4.32,
+  NJ: 4.37, NM: 4.14, NY: 4.63, NC: 4.23, ND: 4.17,
+  OH: 4.21, OK: 4.08, OR: 4.80, PA: 4.32, RI: 4.36,
+  SC: 4.22, SD: 4.14, TN: 4.17, TX: 4.09, UT: 4.19,
+  VT: 4.34, VA: 4.29, WA: 4.97, WV: 4.21, WI: 4.27,
+  WY: 4.23,
 }
 
-// Pre-conflict baseline (Jan 6, 2025) — ~$0.71 lower on national avg
-const BASELINE_NATIONAL_DELTA = 0.71
+// Pre-conflict baseline (Jan 6, 2025) — ~$1.16 lower on national avg
+const BASELINE_NATIONAL_DELTA = 1.16
 export const BASELINE_PRICES = Object.fromEntries(
   Object.entries(regularPrices).map(([k, v]) => [k, parseFloat((v - BASELINE_NATIONAL_DELTA).toFixed(2))])
 )
@@ -46,7 +48,7 @@ export const fallbackPrices = {
 }
 
 // ─── National weekly price history (Jan 2025 → Mar 2026) ─────────────────────
-// 62 data points at weekly intervals — regular prices with conflict-event spikes
+// 63 data points at weekly intervals — regular prices with conflict-event spikes
 
 const DATES = [
   '2025-01-06','2025-01-13','2025-01-20','2025-01-27','2025-02-03',
@@ -61,7 +63,7 @@ const DATES = [
   '2025-11-17','2025-11-24','2025-12-01','2025-12-08','2025-12-15',
   '2025-12-22','2025-12-29','2026-01-05','2026-01-12','2026-01-19',
   '2026-01-26','2026-02-02','2026-02-09','2026-02-16','2026-02-23',
-  '2026-03-02','2026-03-09',
+  '2026-03-02','2026-03-09','2026-03-16',
 ]
 
 // Regular gas national average ($/gal) per week
@@ -78,7 +80,7 @@ const REGULAR_VALS = [
   4.02, 3.98, 3.97, 3.95, 3.93,   // Nov–Dec: gradual easing
   3.91, 3.95, 3.98, 4.00, 4.02,   // Dec–Jan: new sanctions package
   4.01, 3.99, 3.98, 3.97, 3.96,   // Feb: slow improvement
-  3.94, 3.96,                       // Mar 2026: current
+  4.08, 4.29, 4.41,                 // Mar 2026: war outbreak (Feb 28), Hormuz closure, Kharg strikes
 ]
 
 export const nationalHistory = DATES.map((date, i) => ({
@@ -93,7 +95,7 @@ export const nationalHistory = DATES.map((date, i) => ({
 // Approximate state weekly history for the last 24 weeks.
 // Scales the national trend by the state's price ratio, giving a realistic shape.
 
-const NATIONAL_CURRENT = { regular: 3.96, midgrade: 4.17, premium: 4.39, diesel: 4.13 }
+const NATIONAL_CURRENT = { regular: 4.41, midgrade: 4.62, premium: 4.84, diesel: 4.60 }
 
 export function getStateHistory(stateCode, fuelType = 'regular') {
   const statePrice = fallbackPrices[fuelType]?.[stateCode] ?? NATIONAL_CURRENT[fuelType]
